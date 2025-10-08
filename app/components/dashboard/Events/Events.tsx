@@ -11,6 +11,7 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import type { Event } from "@/app/data/events";
+import Link from "next/link";
 
 interface Props {
   entries: Event[];
@@ -20,6 +21,7 @@ export default function Events({ entries }: Props) {
   const [visibleCount, setVisibleCount] = useState(10);
   const [search, setSearch] = useState("");
   const [sortBy, setSortBy] = useState<"newest" | "popularity">("newest");
+  const [filterType, setFilterType] = useState<"free" | "paid">("free");
 
   const handleLoadMore = () => setVisibleCount(entries.length);
 
@@ -33,7 +35,14 @@ export default function Events({ entries }: Props) {
     return 0;
   });
 
-  const visibleEntries = sortedEntries
+  const filteredEntries = sortedEntries.filter((entry) => {
+    
+    if (filterType === "free") return (entry.price ?? 0) === 0;
+    if (filterType === "paid") return (entry.price ?? 0) > 0;
+    return true;
+  });
+
+  const visibleEntries = filteredEntries
     .filter((entry) =>
       entry.title.toLowerCase().includes(search.toLowerCase())
     )
@@ -42,20 +51,37 @@ export default function Events({ entries }: Props) {
   return (
     <div className="space-y-6 p-6">
       {/* Title */}
-      <h1 className="text-3xl font-semibold text-[#00694A] font-francois-one mb-6 pb-2 text-start">
+      <h1 className="text-3xl font-semibold text-black font-francois-one mb-2 pb-2 text-start">
         Events
       </h1>
 
-      {/* Search + Sort */}
-      <div className="mb-6 flex flex-col sm:flex-row justify-between gap-3">
-        <input
-          type="text"
-          placeholder="Search"
-          value={search}
-          onChange={(e) => setSearch(e.target.value)}
-          className="border border-gray-300 rounded-md px-4 py-2 w-full sm:w-1/2 focus:ring-2 focus:ring-[#00694A] focus:outline-none"
-        />
+      {/* Tabs + Sort */}
+      <div className="flex justify-between items-center mb-6">
+        {/* Free / Paid Tabs */}
+        <div className="flex gap-4">
+          <button
+            onClick={() => setFilterType("free")}
+            className={`font-semibold ${
+              filterType === "free"
+                ? "text-[#0d47a1] border-b-2 border-[#0d47a1]"
+                : "text-black"
+            }`}
+          >
+            Free Events
+          </button>
+          <button
+            onClick={() => setFilterType("paid")}
+            className={`font-semibold ${
+              filterType === "paid"
+                ? "text-[#0d47a1] border-b-2 border-[#0d47a1]"
+                : "text-black"
+            }`}
+          >
+            Paid Events
+          </button>
+        </div>
 
+        {/* Sort By Dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -83,6 +109,15 @@ export default function Events({ entries }: Props) {
         </DropdownMenu>
       </div>
 
+      {/* Search */}
+      <input
+        type="text"
+        placeholder="Search"
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+        className="border border-gray-300 rounded-md px-4 py-2 w-full sm:w-1/2 focus:ring-2 focus:ring-[#00694A] focus:outline-none mb-6"
+      />
+
       {/* Event Cards */}
       {visibleEntries.map((entry, idx) => (
         <div
@@ -103,17 +138,20 @@ export default function Events({ entries }: Props) {
           {/* Details */}
           <div className="flex-1 flex flex-col gap-2">
             <div className="flex justify-between items-start mb-2">
-              <h2 className="text-xl font-semibold text-[#00694A]">
+              <Link href={`/events/${entry.id}`}>
+              <h2 className="text-xl font-semibold text-[#0d47a1] hover:underline cursor-pointer">
                 {entry.title}
               </h2>
+              </Link>
 
-              {/* View Now Button */}
+              <Link href={`/events/${entry.id}`}>
               <Button
                 variant="outline"
-                className="text-sm text-[#00694A] hover:bg-blue-500 hover:text-white border-[#00694A] rounded-full"
+                className="text-sm text-[#0d47a1] hover:bg-blue-500 hover:text-white border-[#0d47a1] rounded-full"
               >
                 View Now
               </Button>
+              </Link>
             </div>
 
             <div className="flex items-center text-sm text-gray-700">
@@ -129,8 +167,8 @@ export default function Events({ entries }: Props) {
         </div>
       ))}
 
-      {/* Load More Button */}
-      {visibleCount < entries.length && (
+      {/* Load More */}
+      {visibleCount < filteredEntries.length && (
         <div className="text-center pt-4">
           <Button
             onClick={handleLoadMore}
