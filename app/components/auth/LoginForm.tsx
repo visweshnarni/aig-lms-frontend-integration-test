@@ -7,6 +7,7 @@ import { Button } from "@/components/ui/button";
 import ReCAPTCHA from "react-google-recaptcha";
 
 
+
 type LoginData = {
   email: string;
   password: string;
@@ -96,7 +97,7 @@ export function LoginForm() {
       {/* Submit Button */}
       <Button
         type="submit"
-        className="w-full text-button font-medium bg-orange-500 hover:bg-[#0d47a1] text-white mt-10"
+        className="w-full text-button font-medium bg-orange-500 hover:bg-[#0d47a1] text-white mt-5"
       >
         Login
       </Button>
