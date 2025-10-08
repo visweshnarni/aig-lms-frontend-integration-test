@@ -13,25 +13,25 @@ export default function DashboardHeader() {
         <Image
           src="/urological.png"
           alt="Urological Society of India"
-          width={400}
-          height={400}
+          width={190}
+          height={190}
           className="object-contain"
         />
 
       </div>
 
       {/* Right Section: Profile + Logout */}
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-6">
         <Image
-          src="/doctor.png"
+          src="/profile.jpeg"
           alt="Profile"
           width={45}
           height={45}
-          className="rounded-full object-cover border-2 border-white shadow-sm"
+          className="rounded-full object-cover border-2  shadow-sm"
         />
         <button
           onClick={() => router.push("/logout")}
-          className="bg-orange-500 hover:bg-orange-600 text-white px-6 py-2 rounded-full text-sm font-semibold transition"
+          className="bg-orange-500 text-white font-semibold px-6 py-2 rounded-full hover:bg-orange-600 transition"
         >
           Logout
         </button>

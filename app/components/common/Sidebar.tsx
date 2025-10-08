@@ -16,7 +16,7 @@ export default function Sidebar() {
   const router = useRouter();
 
   return (
-    <aside className="fixed top-0 left-0 h-screen w-64 bg-white border-r flex flex-col justify-between font-poppins">
+    <aside className="fixed top-18 left-0 h-screen w-64 bg-white border-r flex flex-col justify-between font-poppins">
       {/* Menu Section */}
       <div className="mt-4">
         {menuItems.map((item) => (
