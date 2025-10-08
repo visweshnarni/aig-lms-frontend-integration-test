@@ -101,9 +101,9 @@ export function SignupForm() {
       <div className="flex w-full md:w-1/2 justify-center items-center p-6">
         <form
           onSubmit={handleSubmit}
-          className="w-full max-w-md space-y-4 px-4 md:px-6 font-poppins bg-white rounded-2xl shadow-lg p-6"
+          className="w-full max-w-md space-y-4 px-4 md:px-6 font-poppins bg-[#f0faff] rounded-2xl shadow-lg p-6"
         >
-          <h1 className="text-2xl font-bold text-[#0d47a1] mb-6 text-center">
+          <h1 className="text-2xl font-bold text-[#0d47a1] mb-6">
             Sign Up
           </h1>
 
