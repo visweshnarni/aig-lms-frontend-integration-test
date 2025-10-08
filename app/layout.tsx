@@ -40,7 +40,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <div className="pt-20">
+    <div >
       <html
         lang="en"
         className={`${geistSans.variable} ${geistMono.variable} ${francois.variable} ${inter.variable} ${poppins.variable}`}
