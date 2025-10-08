@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import ReCAPTCHA from "react-google-recaptcha";
 
+
 type LoginData = {
   email: string;
   password: string;
@@ -33,22 +34,22 @@ export function LoginForm() {
   return (
     <form
       onSubmit={handleSubmit}
-      className="w-full max-w-md mx-auto space-y-4 px-2 font-poppins bg-[#FFFFFF]"
+      className="w-full max-w-md mx-auto space-y-4 px-2 font-poppins bg-[#f0faff]"
     >
-      <h1 className="text-3xl text-header font-semibold text-[#00694A] text-center">
+      <h1 className="text-2xl font-bold text-[#0d47a1] mb-6">
         Login
       </h1>
 
       {/* Email */}
       <div>
-        <label htmlFor="email" className="block text-label font-normal mb-2">
+        <label htmlFor="email" className="mb-1 font-semibold text-gray-700">
           Email <span className="text-red-500">*</span>
         </label>
         <Input
           id="email"
           type="email"
           placeholder="Enter email"
-          className="text-placeholder"
+          className="text-placeholder w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none bg-white"
           value={form.email}
           onChange={(e) => setForm({ ...form, email: e.target.value })}
         />
@@ -56,25 +57,25 @@ export function LoginForm() {
 
       {/* Password */}
       <div>
-        <label htmlFor="password" className="block text-label font-normal mb-2">
+        <label htmlFor="password" className="mb-1 font-semibold text-gray-700">
           Password <span className="text-red-500">*</span>
         </label>
         <Input
           id="password"
           type="password"
           placeholder="Enter password"
-          className="text-placeholder"
+          className="text-placeholder w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none bg-white"
           value={form.password}
           onChange={(e) => setForm({ ...form, password: e.target.value })}
         />
       </div>
 
       {/* Forgot Password */}
-      <div className="text-right text-sm mt-1">
+      <div className="text-left text-sm mt-1">
         <button
           type="button"
           onClick={() => router.push("/forgot-password")}
-          className="text-[#00694A] hover:underline font-medium cursor-pointer"
+          className="text-orange-500 hover:underline font-medium cursor-pointer"
         >
           Forgot Password?
         </button>
@@ -95,18 +96,18 @@ export function LoginForm() {
       {/* Submit Button */}
       <Button
         type="submit"
-        className="w-full text-button font-medium bg-[#00694A] hover:bg-[#008562] text-white mt-10"
+        className="w-full text-button font-medium bg-orange-500 hover:bg-[#0d47a1] text-white mt-10"
       >
         Login
       </Button>
 
       {/* Route Switch */}
-      <div className="text-center mt-6 text-paragraph font-medium">
+      <div className="text-left mt-2 text-paragraph font-medium">
         Don’t have an account?
         <button
           type="button"
           onClick={() => router.push("/signup")}
-          className="text-[#00694A] ml-1 hover:underline font-semibold cursor-pointer"
+          className="text-orange-500 ml-1 hover:underline font-semibold cursor-pointer"
         >
           Signup now
         </button>

@@ -30,8 +30,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Telangana Dental Council",
-  description: "Official website of the Telangana Dental Council",
+  title: "Urologial Society of India",
+  description: "Official website of the Urologial Society of India",
 };
 
 export default function RootLayout({
