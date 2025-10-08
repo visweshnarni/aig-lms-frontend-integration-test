@@ -1,113 +1,44 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { usePathname, useRouter } from 'next/navigation';
-import Image from 'next/image';
-import { ChevronDown, ChevronUp } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { usePathname, useRouter } from "next/navigation";
+import Image from "next/image";
 
 const menuItems = [
-	{ label: 'Application Form', path: '/dashboard/application-form' },
-	{ label: 'Note from Council', path: '/dashboard/note-from-council' },
-	{ label: 'My Profile', path: '/dashboard/myprofile' },
-	{ label: 'My Certificate', path: '/dashboard/certificates' },
-	{ label: 'Renewal', path: '/dashboard/renewal' },
-	{ label: 'Good Standing Certificates', path: '/dashboard/gsc' },
-	{ label: 'No Objection Certificate', path: '/dashboard/noc' },
-	{
-		label: 'Appointment',
-		isDropdown: true,
-		children: [
-			{ label: 'Registration', path: '/dashboard/appointments/registration' },
-			{ label: 'Renewal (Tatkal)', path: '/dashboard/appointments/renewal' },
-			{ label: 'Good Standing Certificates', path: '/dashboard/appointments/gsc' },
-			{ label: 'No Objection Certificate', path: '/dashboard/appointments/noc' },
-		],
-	},
-	{ label: 'Payments', path: '/dashboard/payment' },
-	{ label: 'Announcements', path: '/dashboard/announcements' },
-	{ label: 'Events', path: '/dashboard/events' },
+  { label: "Events", path: "/dashboard/events", icon: "/icons/events.png" },
+  { label: "Registered Events", path: "/dashboard/purchased-events", icon: "/icons/purchased-events.png" },
+  { label: "Speakers", path: "/dashboard/speakers", icon: "/icons/speaker.png" },
+  { label: "My Profile", path: "/dashboard/profile", icon: "/icons/my-profile.png" },
+  { label: "My Purchases", path: "/dashboard/purchases", icon: "/icons/my-purchases.png" },
 ];
 
 export default function Sidebar() {
-	const router = useRouter();
-	const pathname = usePathname();
-	const [openDropdown, setOpenDropdown] = useState<string | null>(null);
+  const pathname = usePathname();
+  const router = useRouter();
 
-	const toggleDropdown = (label: string) => {
-		setOpenDropdown((prev) => (prev === label ? null : label));
-	};
-
-	return (
-    <aside className="fixed top-20 left-0 h-[calc(100vh-5rem)] w-72 bg-white shadow p-6 font-poppins z-40 hidden md:flex flex-col">
-      {/* Profile Info */}
-      <div className="text-center mb-6 border-b pb-4">
-        <Image
-          src="/images/dravatar.jpg"
-          alt="Profile"
-          width={90}
-          height={90}
-          className="mx-auto rounded-full object-cover border"
-        />
-        <h3 className="mt-3 text-sm font-semibold text-gray-800 leading-tight">
-          Dr. MADISHETTI ABHILASH
-        </h3>
-        <p className="text-xs text-gray-500">
-          Bachelor of Dental Surgery (BDS)
-        </p>
-      </div>
-
-      {/* Menu */}
-      <div className="space-y-1 flex-1 overflow-y-auto">
-        {menuItems.map((item) =>
-          item.isDropdown ? (
-            <div key={item.label}>
-              <button
-                type="button"
-                onClick={() => toggleDropdown(item.label)}
-                className="cursor-pointer w-full flex justify-between items-center px-3 py-2 rounded-md text-sm font-medium text-left hover:bg-gray-100 text-gray-700"
-              >
-                <span>{item.label}</span>
-                {openDropdown === item.label ? (
-                  <ChevronUp size={16} />
-                ) : (
-                  <ChevronDown size={16} />
-                )}
-              </button>
-              {openDropdown === item.label && (
-                <div className="pl-4 mt-1 space-y-1">
-                  {item.children.map((child) => (
-                    <button
-                      key={child.label}
-                      type="button"
-                      onClick={() => router.push(child.path)}
-                      className={`cursor-pointer block w-full text-left px-3 py-1 rounded-md text-sm ${
-                        pathname === child.path
-                          ? "bg-blue-100 text-[#00694A] font-semibold"
-                          : "hover:bg-gray-100 text-gray-700"
-                      }`}
-                    >
-                      {child.label}
-                    </button>
-                  ))}
-                </div>
-              )}
-            </div>
-          ) : (
-            <button
-              key={item.label}
-              type="button"
-              onClick={() => router.push(item.path!)}
-              className={`cursor-pointer w-full text-left px-3 py-2 rounded-md text-sm font-medium ${
-                pathname === item.path
-                  ? "bg-blue-100 text-[#00694A] font-semibold"
-                  : "hover:bg-gray-100 text-gray-700"
-              }`}
-            >
-              {item.label}
-            </button>
-          )
-        )}
+  return (
+    <aside className="fixed top-0 left-0 h-screen w-64 bg-white border-r flex flex-col justify-between font-poppins">
+      {/* Menu Section */}
+      <div className="mt-4">
+        {menuItems.map((item) => (
+          <button
+            key={item.label}
+            onClick={() => router.push(item.path!)}
+            className={`flex items-center gap-3 w-full text-left px-4 py-3 text-sm font-medium transition-colors ${
+              pathname === item.path
+                ? "bg-orange-500 text-white"
+                : "text-gray-700 hover:bg-orange-100"
+            }`}
+          >
+            <Image
+              src={item.icon}
+              alt={item.label}
+              width={20}
+              height={20}
+              className="object-contain"
+            />
+            <span>{item.label}</span>
+          </button>
+        ))}
       </div>
     </aside>
   );
