@@ -252,13 +252,13 @@ export function SignupForm() {
       {/* Submit */}
       <Button
         type="submit"
-        className="w-full text-button font-medium bg-orange-500 hover:bg-[#0d47a1] text-white mt-10"
+        className="w-full text-button font-medium bg-orange-500 hover:bg-[#0d47a1] text-white mt-1"
       >
         Sign Up
       </Button>
 
       {/* Switch to Login */}
-      <div className="text-left mt-2 text-paragraph font-medium">
+      <div className="text-left mt-1 text-paragraph font-medium">
         Already have an account?
         <button
           type="button"

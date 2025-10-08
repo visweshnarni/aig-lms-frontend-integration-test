@@ -3,6 +3,7 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Header from "@/app/components/auth/commonheader";
+import Footer from "@/app/components/auth/navbar";
 
 export const metadata: Metadata = {
   description: "Login or Signup to Urological Society of India",
