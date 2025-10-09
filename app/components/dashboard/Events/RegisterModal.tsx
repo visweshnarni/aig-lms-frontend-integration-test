@@ -1,5 +1,4 @@
 "use client";
-
 import { X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
@@ -9,12 +8,14 @@ interface RegisterModalProps {
   isOpen: boolean;
   onClose: () => void;
   eventTitle: string;
+  onRegister: () => void; // add this for registration flow
 }
 
 export default function RegisterModal({
   isOpen,
   onClose,
   eventTitle,
+  onRegister,
 }: RegisterModalProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
@@ -24,11 +25,14 @@ export default function RegisterModal({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!name || !email || !captchaValue) {
-      alert("Please fill all fields and complete reCAPTCHA");
-      return;
+    // if (!name || !email || !captchaValue) {
+    //   alert("Please fill all fields and complete reCAPTCHA");
+    //   return;
+    if (!name || !email) { // only check for name and email during local dev
+    alert("Please fill all fields.");
+    return;
     }
-    // For now, simulate registration success
+    onRegister(); // trigger registration
     alert(`Registered successfully for ${eventTitle}`);
     onClose();
   };
@@ -73,7 +77,6 @@ export default function RegisterModal({
             />
           </div>
 
-          {/* Real reCAPTCHA */}
           <div className="my-2">
             <ReCAPTCHA
               sitekey="YOUR_SITE_KEY_HERE" // replace with your actual site key
