@@ -17,7 +17,7 @@ function useRegisteredEvents() {
 }
 
 export default function EventDetailsPage() {
-const { id, videoID } = useParams() as { id: string, videoID: string };
+const { id } = useParams() as { id: string };
   const event = events.find((e) => e.id === id);
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);

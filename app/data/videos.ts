@@ -46,6 +46,7 @@ export const videos: Video[] = [
     speaker: "R.V. Sudarshan",
     duration: "12:33",
     thumbnail: "/video-placeholder.png",
+    videoUrl: "/videos/video4.mp4",
     session: "Session 1: Laparoscopy & Robotics I",
     eventId: "fusicon-2026",
   },

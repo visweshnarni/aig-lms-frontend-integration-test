@@ -15,14 +15,14 @@ export default function ProfileComponent() {
   };
 
   return (
-    <div className="bg-[#eef6ff] p-8 rounded-2xl shadow-sm max-w-4xl mx-auto">
+    <div className="bg-[#eef6ff] p-10 rounded-2xl shadow-md max-w-6xl mx-auto mt-10">
       {/* Profile Photo Section */}
-      <div className="flex items-center gap-6 mb-6">
+      <div className="flex items-center gap-8 mb-8">
         <Image
           src={photo}
           alt="Profile Photo"
-          width={80}
-          height={80}
+          width={100}
+          height={100}
           className="rounded-full object-cover border-2 border-orange-400"
         />
         <div>
@@ -30,7 +30,7 @@ export default function ProfileComponent() {
             Select Photo
             <input type="file" accept="image/*" className="hidden" />
           </label>
-          <p className="text-sm text-gray-600">
+          <p className="text-sm text-black mt-1">
             File size: Up to 5MB<br />
             Supported file types: JPG, JPEG, PNG, GIF, WEBP
           </p>
@@ -38,7 +38,7 @@ export default function ProfileComponent() {
       </div>
 
       {/* Form Fields */}
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-6">
         <div>
           <label className="block text-sm font-medium">Full Name</label>
           <input
@@ -46,7 +46,7 @@ export default function ProfileComponent() {
             name="fullName"
             value={form.fullName}
             onChange={handleChange}
-            className="w-full border rounded-md p-2 mt-1"
+            className="w-full border rounded-md p-3 mt-1 bg-white"
           />
         </div>
 
@@ -57,7 +57,7 @@ export default function ProfileComponent() {
             name="prefix"
             value={form.prefix}
             onChange={handleChange}
-            className="w-full border rounded-md p-2 mt-1"
+            className="w-full border rounded-md p-3 mt-1 bg-white"
           />
         </div>
 
@@ -68,7 +68,7 @@ export default function ProfileComponent() {
             name="designation"
             value={form.designation}
             onChange={handleChange}
-            className="w-full border rounded-md p-2 mt-1"
+            className="w-full border rounded-md p-3 mt-1 bg-white"
           />
         </div>
 
@@ -79,7 +79,7 @@ export default function ProfileComponent() {
             name="affiliation"
             value={form.affiliation}
             onChange={handleChange}
-            className="w-full border rounded-md p-2 mt-1"
+            className="w-full border rounded-md p-3 mt-1 bg-white"
           />
         </div>
 
@@ -90,7 +90,7 @@ export default function ProfileComponent() {
             name="mobile"
             value={form.mobile}
             onChange={handleChange}
-            className="w-full border rounded-md p-2 mt-1"
+            className="w-full border rounded-md p-3 mt-1 bg-white"
           />
         </div>
 
@@ -101,7 +101,7 @@ export default function ProfileComponent() {
             name="email"
             value={form.email}
             onChange={handleChange}
-            className="w-full border rounded-md p-2 mt-1"
+            className="w-full border rounded-md p-3 mt-1 bg-white"
           />
         </div>
 
@@ -111,7 +111,7 @@ export default function ProfileComponent() {
             name="country"
             value={form.country}
             onChange={handleChange}
-            className="w-full border rounded-md p-2 mt-1"
+            className="w-full border rounded-md p-3 mt-1 bg-white"
           >
             <option>-Select-</option>
             <option>India</option>
@@ -125,7 +125,7 @@ export default function ProfileComponent() {
             name="state"
             value={form.state}
             onChange={handleChange}
-            className="w-full border rounded-md p-2 mt-1"
+            className="w-full border rounded-md p-3 mt-1 bg-white"
           >
             <option>-Select-</option>
             <option>Telangana</option>
@@ -139,7 +139,7 @@ export default function ProfileComponent() {
             name="city"
             value={form.city}
             onChange={handleChange}
-            className="w-full border rounded-md p-2 mt-1"
+            className="w-full border rounded-md p-3 mt-1 bg-white"
           >
             <option>-Select-</option>
             <option>Hyderabad</option>
@@ -154,13 +154,13 @@ export default function ProfileComponent() {
             name="pincode"
             value={form.pincode}
             onChange={handleChange}
-            className="w-full border rounded-md p-2 mt-1"
+            className="w-full border rounded-md p-3 mt-1 bg-white"
           />
         </div>
       </div>
 
-      <div className="flex justify-end mt-6">
-        <button className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700">
+      <div className="flex justify-start mt-8">
+        <button className="bg-blue-600 text-white px-8 py-3 rounded-lg hover:bg-blue-700">
           Update
         </button>
       </div>
