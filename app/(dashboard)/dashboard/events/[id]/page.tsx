@@ -1,13 +1,13 @@
 "use client";
 import { useParams } from "next/navigation";
 import Image from "next/image";
-import Link from "next/link";
 import { useState } from "react";
 import { CalendarDays, MapPin, Search, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { events } from "@/app/data/events";
 import { videos as videoData } from "@/app/data/videos";
 import RegisterModal from "@/app/components/dashboard/Events/RegisterModal";
+
 // Mock hook, replace with real one if needed
 function useRegisteredEvents() {
   const [registered, setRegistered] = useState<string[]>([]);
@@ -17,7 +17,7 @@ function useRegisteredEvents() {
 }
 
 export default function EventDetailsPage() {
-const { id } = useParams() as { id: string };
+  const { id } = useParams() as { id: string };
   const event = events.find((e) => e.id === id);
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -48,7 +48,12 @@ const { id } = useParams() as { id: string };
       <div className="flex flex-col lg:flex-row justify-between items-start gap-6">
         <div className="flex flex-col sm:flex-row gap-6 items-start">
           <div className="w-36 h-36 relative rounded-md overflow-hidden shrink-0">
-            <Image src={event.imageUrl} alt={event.title} fill className="object-cover rounded-md" />
+            <Image
+              src={event.imageUrl}
+              alt={event.title}
+              fill
+              className="object-cover rounded-md"
+            />
           </div>
           <div className="flex-1">
             <h1 className="text-3xl font-bold text-[#0d47a1] mb-2">{event.title}</h1>
@@ -80,7 +85,9 @@ const { id } = useParams() as { id: string };
           {Object.keys(sessions).length} Sessions • {filteredVideos.length} Videos •{" "}
           {filteredVideos.reduce(
             (sum, v) =>
-              sum + parseInt(v.duration.split(":")[0]) * 60 + parseInt(v.duration.split(":")[1]),
+              sum +
+              parseInt(v.duration.split(":")[0]) * 60 +
+              parseInt(v.duration.split(":")[1]),
             0
           )}{" "}
           mins total length
@@ -99,6 +106,7 @@ const { id } = useParams() as { id: string };
             className="border border-gray-300 rounded-md px-8 py-2 w-full focus:ring-2 focus:ring-[#FF6600] focus:outline-none"
           />
         </div>
+
         {Object.keys(sessions).map((session) => (
           <div key={session} className="space-y-4">
             <div className="flex items-center gap-2 text-lg font-semibold text-[#0d47a1]">
@@ -108,28 +116,40 @@ const { id } = useParams() as { id: string };
             <div className="space-y-4">
               {sessions[session].map((video) =>
                 isRegistered(id) ? (
-                  <Link
+                  <div
                     key={video.id}
-                    href={`/dashboard/events/${id}/video/${video.id}`}
-                    className="flex items-start gap-4 border-b pb-4 hover:bg-gray-50 rounded-md transition"
+                    className="flex flex-col gap-3 border-b pb-4 hover:bg-gray-50 rounded-md transition p-3"
                   >
-                    {/* ID, Thumbnail, Details */}
-                    <div className="text-gray-600 font-semibold w-6">
-                      {video.id}
+                    <div className="flex items-center gap-3">
+                      <div className="text-gray-600 font-semibold w-6">
+                        {video.id}
+                      </div>
+                      <div className="flex-1">
+                        <p className="text-sm text-gray-800 font-medium mb-1">
+                          {video.title}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          Speaker –{" "}
+                          <span className="text-[#FF6600] font-semibold">
+                            {video.speaker}
+                          </span>
+                        </p>
+                      </div>
+                      <div className="text-sm text-gray-600 whitespace-nowrap">
+                        {video.duration}
+                      </div>
                     </div>
-                    <div className="w-32 h-20 relative rounded-md overflow-hidden shrink-0 bg-gray-200">
-                      <video
+                    {/* Inline Video Player */}
+                    <div className="w-full h-64 sm:h-80 rounded-md overflow-hidden">
+                      <iframe
                         src={video.videoUrl}
-                        className="w-full h-full object-cover rounded-md"
-                        poster={video.thumbnail || "/video-placeholder.png"}
-                      />
+                        title={video.title}
+                        className="w-full h-full rounded-md"
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                        allowFullScreen
+                      ></iframe>
                     </div>
-                    <div className="flex-1">
-                      <p className="text-sm text-gray-800 font-medium mb-1">{video.title}</p>
-                      <p className="text-sm text-gray-600">Speaker – <span className="text-[#FF6600] font-semibold">{video.speaker}</span></p>
-                    </div>
-                    <div className="text-sm text-gray-600 whitespace-nowrap">Video – {video.duration}</div>
-                  </Link>
+                  </div>
                 ) : (
                   <div
                     key={video.id}
@@ -141,10 +161,13 @@ const { id } = useParams() as { id: string };
                     <div className="flex-1">
                       <p className="text-sm text-gray-800 font-medium mb-1">{video.title}</p>
                       <p className="text-sm text-gray-600">
-                        Speaker – <span className="text-[#FF6600] font-semibold">{video.speaker}</span>
+                        Speaker –{" "}
+                        <span className="text-[#FF6600] font-semibold">{video.speaker}</span>
                       </p>
                     </div>
-                    <div className="text-sm text-gray-600 whitespace-nowrap">Register to access</div>
+                    <div className="text-sm text-gray-600 whitespace-nowrap">
+                      Register to access
+                    </div>
                   </div>
                 )
               )}
@@ -152,8 +175,14 @@ const { id } = useParams() as { id: string };
           </div>
         ))}
       </div>
+
       {/* Register Modal */}
-      <RegisterModal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} eventTitle={event.title} onRegister={handleRegister} />
+      <RegisterModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        eventTitle={event.title}
+        onRegister={handleRegister}
+      />
     </div>
   );
 }

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { CalendarDays, MapPin, Video, SlidersHorizontal, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -10,10 +11,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-// import { speakers, type Speaker } from "@/app/data/speakers";
 import { speakers } from "@/app/data/speakers";
-
-
 
 export default function SpeakersPage() {
   const [search, setSearch] = useState("");
@@ -21,12 +19,8 @@ export default function SpeakersPage() {
   const [visibleCount, setVisibleCount] = useState(12);
 
   const sortedSpeakers = [...speakers].sort((a, b) => {
-    if (sortBy === "alphabetical") {
-      return a.name.localeCompare(b.name);
-    }
-    if (sortBy === "videos") {
-      return b.videos - a.videos;
-    }
+    if (sortBy === "alphabetical") return a.name.localeCompare(b.name);
+    if (sortBy === "videos") return b.videos - a.videos;
     return 0;
   });
 
@@ -38,12 +32,10 @@ export default function SpeakersPage() {
 
   return (
     <div className="space-y-6 p-1">
-      {/* Title */}
       <h1 className="text-xl font-semibold text-black mb-2">Speakers</h1>
 
       {/* Sort & Search */}
       <div className="flex flex-col sm:flex-row justify-between gap-4 items-start sm:items-center">
-        {/* Search */}
         <div className="relative w-full sm:w-1/2">
           <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
           <input
@@ -55,7 +47,6 @@ export default function SpeakersPage() {
           />
         </div>
 
-        {/* Sort By Dropdown */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
             <Button
@@ -71,7 +62,7 @@ export default function SpeakersPage() {
               onClick={() => setSortBy("alphabetical")}
               className={sortBy === "alphabetical" ? "bg-[#FF6600] text-white" : ""}
             >
-             Newest First
+              Newest First
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={() => setSortBy("videos")}
@@ -86,9 +77,10 @@ export default function SpeakersPage() {
       {/* Speakers Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-3 max-w-[1400px] mx-auto">
         {filteredSpeakers.map((speaker) => (
-          <div
+          <Link
             key={speaker.id}
-            className="border border-gray-200 rounded-lg p-4 shadow-sm bg-white flex gap-4 items-center"
+            href={`/dashboard/speakers/${speaker.id}`}
+            className="border border-gray-200 rounded-lg p-4 shadow-sm bg-white flex gap-4 items-center hover:shadow-md transition"
           >
             <div className="w-20 h-20 flex-shrink-0 rounded-full overflow-hidden bg-gray-100">
               <Image
@@ -115,11 +107,10 @@ export default function SpeakersPage() {
                 <span>{speaker.videos} Videos</span>
               </div>
             </div>
-          </div>
+          </Link>
         ))}
       </div>
 
-      {/* Load More */}
       {visibleCount < speakers.length && (
         <div className="text-center pt-4">
           <Button
