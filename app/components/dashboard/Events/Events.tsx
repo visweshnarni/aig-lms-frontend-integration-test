@@ -52,7 +52,7 @@ export default function Events({ entries }: Props) {
     <div className="space-y-6 p-1">
       {/* Title */}
       <h1 className="text-2xl font-semibold text-black font-francois-one mb-2 pb-2 text-start">
-        Events
+        All Events
       </h1>
 
       {/* Tabs + Sort */}
@@ -147,7 +147,7 @@ export default function Events({ entries }: Props) {
 <Link href={`/dashboard/events/${entry.id}`}>
   <Button
     variant="outline"
-    className="text-sm text-[#0d47a1] hover:bg-blue-500 hover:text-white border-[#0d47a1] rounded-full"
+    className="text-sm text-white bg-blue-600 hover:bg-blue-500 hover:text-white border-blue rounded-full"
   >
     View Now
   </Button>
@@ -155,15 +155,18 @@ export default function Events({ entries }: Props) {
 
             </div>
 
-            <div className="flex items-center text-sm text-gray-700">
-              <CalendarDays className="w-4 h-4 mr-2 text-gray-400" />
+            <div className="flex items-center text-bold text-black">
+              <CalendarDays className="w-4 h-4 mr-2 text-black" />
               <span>{entry.dateRange}</span>
             </div>
 
-            <div className="flex items-center text-sm text-gray-700">
-              <MapPin className="w-4 h-4 mr-2 text-gray-400" />
+            <div className="flex items-center text-bold text-black">
+              <MapPin className="w-4 h-4 mr-2 text-black" />
               <span>{entry.location}</span>
             </div>
+              <div className="text-sm text-black ">
+    3 Sessions · 12 Videos · 50 mins total event
+  </div>
           </div>
         </div>
       ))}

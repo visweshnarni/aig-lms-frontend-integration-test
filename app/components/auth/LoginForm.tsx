@@ -45,7 +45,7 @@ export function LoginForm() {
 
           {/* Email */}
           <div>
-            <label htmlFor="email" className="mb-1 font-semibold text-gray-700">
+            <label htmlFor="email" className="mb-1 test-black">
               Email <span className="text-red-500">*</span>
             </label>
             <Input
@@ -62,7 +62,7 @@ export function LoginForm() {
           <div>
             <label
               htmlFor="password"
-              className="mb-1 font-semibold text-gray-700"
+              className="mb-1 test-black"
             >
               Password <span className="text-red-500">*</span>
             </label>

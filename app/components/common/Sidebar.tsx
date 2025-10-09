@@ -4,7 +4,7 @@ import { usePathname, useRouter } from "next/navigation";
 import Image from "next/image";
 
 const menuItems = [
-  { label: "Events", path: "/dashboard/events", icon: "/icons/events.png" },
+  { label: "All Events", path: "/dashboard/events", icon: "/icons/events.png" },
   { label: "Registered Events", path: "/dashboard/registeredevents", icon: "/icons/purchased-events.png" },
   { label: "Speakers", path: "/dashboard/speakers", icon: "/icons/speaker.png" },
   { label: "My Profile", path: "/dashboard/myprofile", icon: "/icons/my-profile.png" },

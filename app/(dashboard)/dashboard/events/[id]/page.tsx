@@ -2,13 +2,13 @@
 import { useParams } from "next/navigation";
 import Image from "next/image";
 import { useState } from "react";
-import { CalendarDays, MapPin, Search, ChevronDown } from "lucide-react";
+import { CalendarDays, MapPin, Search, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { events } from "@/app/data/events";
 import { videos as videoData } from "@/app/data/videos";
 import RegisterModal from "@/app/components/dashboard/Events/RegisterModal";
 
-// Mock hook, replace with real one if needed
+// Mock hook (replace with real one if needed)
 function useRegisteredEvents() {
   const [registered, setRegistered] = useState<string[]>([]);
   const register = (id: string) => setRegistered(rs => [...rs, id]);
@@ -21,11 +21,12 @@ export default function EventDetailsPage() {
   const event = events.find((e) => e.id === id);
   const [search, setSearch] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [openSessions, setOpenSessions] = useState<Record<string, boolean>>({});
   const { isRegistered, register } = useRegisteredEvents();
 
   if (!event) return <div className="p-8 text-center">Event not found</div>;
 
-  // Show only event videos, grouped by session
+  // Filter and group videos by session
   const filteredVideos = videoData.filter(
     (v) =>
       v.eventId === id && v.title.toLowerCase().includes(search.toLowerCase())
@@ -42,6 +43,13 @@ export default function EventDetailsPage() {
     setIsModalOpen(false);
   }
 
+  const toggleSession = (session: string) => {
+    setOpenSessions((prev) => ({
+      ...prev,
+      [session]: !prev[session],
+    }));
+  };
+
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-10">
       {/* Header */}
@@ -56,13 +64,15 @@ export default function EventDetailsPage() {
             />
           </div>
           <div className="flex-1">
-            <h1 className="text-3xl font-bold text-[#0d47a1] mb-2">{event.title}</h1>
-            <div className="flex items-center text-gray-700 mb-2">
-              <CalendarDays className="w-4 h-4 mr-2 text-gray-400" />
+            <h1 className="text-3xl font-bold text-[#0d47a1] mb-2">
+              {event.title}
+            </h1>
+            <div className="flex items-center text-black mb-2">
+              <CalendarDays className="w-4 h-4 mr-2 text-black" />
               <span>{event.dateRange}</span>
             </div>
-            <div className="flex items-center text-gray-700">
-              <MapPin className="w-4 h-4 mr-2 text-gray-400" />
+            <div className="flex items-center text-black">
+              <MapPin className="w-4 h-4 mr-2 text-black" />
               <span>{event.location}</span>
             </div>
           </div>
@@ -80,8 +90,8 @@ export default function EventDetailsPage() {
 
       {/* Contents */}
       <div>
-        <h2 className="text-xl font-semibold mb-3 text-[#0d47a1]">Contents</h2>
-        <p className="text-gray-700 text-sm sm:text-base">
+        <h2 className="text-xl mb-3 text-[#0d47a1]">Contents</h2>
+        <p className="text-black sm:text-base">
           {Object.keys(sessions).length} Sessions • {filteredVideos.length} Videos •{" "}
           {filteredVideos.reduce(
             (sum, v) =>
@@ -108,22 +118,70 @@ export default function EventDetailsPage() {
         </div>
 
         {Object.keys(sessions).map((session) => (
-          <div key={session} className="space-y-4">
-            <div className="flex items-center gap-2 text-lg font-semibold text-[#0d47a1]">
-              {session}
-              <ChevronDown className="w-4 h-4 text-[#FF6600]" />
+          <div key={session} className="space-y-4 border-b pb-4">
+            {/* Session Header with Chevron beside name */}
+            <div className="flex items-center gap-2">
+              <h3 className="text-lg font-semibold text-[#0d47a1]">{session}</h3>
+              <button
+                onClick={() => toggleSession(session)}
+                className="p-1 text-[#FF6600] hover:text-[#cc5200] focus:outline-none"
+              >
+                {openSessions[session] ? (
+                  <ChevronUp className="w-5 h-5" />
+                ) : (
+                  <ChevronDown className="w-5 h-5" />
+                )}
+              </button>
             </div>
-            <div className="space-y-4">
-              {sessions[session].map((video) =>
-                isRegistered(id) ? (
-                  <div
-                    key={video.id}
-                    className="flex flex-col gap-3 border-b pb-4 hover:bg-gray-50 rounded-md transition p-3"
-                  >
-                    <div className="flex items-center gap-3">
+
+            {/* Collapsible Video Section */}
+            {openSessions[session] && (
+              <div className="space-y-4 mt-3">
+                {sessions[session].map((video) =>
+                  isRegistered(id) ? (
+                    <div
+                      key={video.id}
+                      className="flex flex-col gap-3 border-b pb-4 hover:bg-gray-50 rounded-md transition p-3"
+                    >
+                      <div className="flex items-center gap-3">
+                        <div className="text-black w-6">{video.id}</div>
+                        <div className="flex-1">
+                          <p className="text-sm text-black mb-1">
+                            {video.title}
+                          </p>
+                          <p className="text-sm text-black">
+                            Speaker –{" "}
+                            <span className="text-[#FF6600] font-bold">
+                              {video.speaker}
+                            </span>
+                          </p>
+                        </div>
+                        <div className="text-black whitespace-nowrap">
+                          {video.duration}
+                        </div>
+                      </div>
+
+                      {/* Inline Video Player */}
+                      <div className="w-full h-64 sm:h-80 rounded-md overflow-hidden">
+                        <iframe
+                          src={video.videoUrl}
+                          title={video.title}
+                          className="w-full h-full rounded-md"
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                        ></iframe>
+                      </div>
+                    </div>
+                  ) : (
+                    <div
+                      key={video.id}
+                      onClick={() => setIsModalOpen(true)}
+                      className="flex items-start gap-4 border-b pb-4 rounded-md transition cursor-pointer opacity-60"
+                    >
                       <div className="text-gray-600 font-semibold w-6">
                         {video.id}
                       </div>
+                      <div className="w-32 h-20 relative rounded-md overflow-hidden shrink-0 bg-gray-200"></div>
                       <div className="flex-1">
                         <p className="text-sm text-gray-800 font-medium mb-1">
                           {video.title}
@@ -135,43 +193,14 @@ export default function EventDetailsPage() {
                           </span>
                         </p>
                       </div>
-                      <div className="text-sm text-gray-600 whitespace-nowrap">
-                        {video.duration}
+                      <div className="text-sm text-black whitespace-nowrap">
+                        Register to access
                       </div>
                     </div>
-                    {/* Inline Video Player */}
-                    <div className="w-full h-64 sm:h-80 rounded-md overflow-hidden">
-                      <iframe
-                        src={video.videoUrl}
-                        title={video.title}
-                        className="w-full h-full rounded-md"
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                        allowFullScreen
-                      ></iframe>
-                    </div>
-                  </div>
-                ) : (
-                  <div
-                    key={video.id}
-                    onClick={() => setIsModalOpen(true)}
-                    className="flex items-start gap-4 border-b pb-4 rounded-md transition cursor-pointer opacity-60"
-                  >
-                    <div className="text-gray-600 font-semibold w-6">{video.id}</div>
-                    <div className="w-32 h-20 relative rounded-md overflow-hidden shrink-0 bg-gray-200"></div>
-                    <div className="flex-1">
-                      <p className="text-sm text-gray-800 font-medium mb-1">{video.title}</p>
-                      <p className="text-sm text-gray-600">
-                        Speaker –{" "}
-                        <span className="text-[#FF6600] font-semibold">{video.speaker}</span>
-                      </p>
-                    </div>
-                    <div className="text-sm text-gray-600 whitespace-nowrap">
-                      Register to access
-                    </div>
-                  </div>
-                )
-              )}
-            </div>
+                  )
+                )}
+              </div>
+            )}
           </div>
         ))}
       </div>

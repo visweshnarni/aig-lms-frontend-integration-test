@@ -64,7 +64,7 @@ export default function RegEvents() {
             placeholder="Search"
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="pl-9 w-full border border-gray-300 rounded-md px-4 py-2 focus:ring-2 focus:ring-[#00694A] focus:outline-none"
+            className="pl-9 w-full border border-gray-500 rounded-md px-4 py-2 focus:ring-2 focus:ring-[#00694A] focus:outline-none"
           />
         </div>
 
@@ -117,24 +117,24 @@ export default function RegEvents() {
               <h2 className="text-lg font-semibold text-blue-700">
                 {event.name}
               </h2>
-              <div className="flex items-center gap-2 text-sm mt-1 text-[#1A1A1A]">
+              <div className="flex items-center gap-2 mt-1 text-black">
                 <CalendarDays className="h-4 w-4" />
                 <span>
                   {event.startDate} - {event.endDate}
                 </span>
               </div>
-              <div className="flex items-center gap-2 text-sm mt-1 text-[#1A1A1A]">
+              <div className="flex items-center gap-2  mt-1 text-black">
                 <MapPin className="h-4 w-4" />
                 <span>{event.location}</span>
               </div>
               {event.videos && (
-                <div className="flex items-center gap-2 text-sm mt-1 text-[#1A1A1A]">
+                <div className="flex items-center gap-2  mt-1 text-black">
                   <Video className="h-4 w-4" />
                   <span>{event.videos}</span>
                 </div>
               )}
               {event.sessions && (
-                <div className="flex flex-wrap gap-3 text-sm mt-1 text-[#1A1A1A]">
+                <div className="flex flex-wrap gap-3  mt-1 text-black">
                   <span>{event.sessions}</span>
                   <span>• {event.videos}</span>
                   <span>• {event.duration}</span>
