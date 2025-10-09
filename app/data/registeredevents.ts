@@ -1,0 +1,26 @@
+export const registeredEvents = [
+  {
+    id: 1,
+    name: "FUSICON 2026",
+    startDate: "17 Apr 2026",
+    endDate: "18 Apr 2026",
+    location: "The Lalit, IT Park, Chandigarh",
+    videos: "12 recorded videos",
+    registeredOn: "2 May 2025",
+    sessions: null,
+    duration: null,
+    image: "/event-logo.png",
+  },
+  {
+    id: 2,
+    name: "PUSICON 2026",
+    startDate: "23 Apr 2026",
+    endDate: "25 Apr 2026",
+    location: "The Lalit, IT Park, Chandigarh",
+    videos: "12 Videos",
+    sessions: "3 Sessions",
+    duration: "50 mins total event",
+    registeredOn: "2 May 2025",
+    image: "/event-logo.png",
+  },
+];

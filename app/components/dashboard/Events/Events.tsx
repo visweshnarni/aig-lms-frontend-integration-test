@@ -49,9 +49,9 @@ export default function Events({ entries }: Props) {
     .slice(0, visibleCount);
 
   return (
-    <div className="space-y-6 p-6">
+    <div className="space-y-6 p-1">
       {/* Title */}
-      <h1 className="text-3xl font-semibold text-black font-francois-one mb-2 pb-2 text-start">
+      <h1 className="text-2xl font-semibold text-black font-francois-one mb-2 pb-2 text-start">
         Events
       </h1>
 
@@ -138,20 +138,21 @@ export default function Events({ entries }: Props) {
           {/* Details */}
           <div className="flex-1 flex flex-col gap-2">
             <div className="flex justify-between items-start mb-2">
-              <Link href={`/events/${entry.id}`}>
-              <h2 className="text-xl font-semibold text-[#0d47a1] hover:underline cursor-pointer">
-                {entry.title}
-              </h2>
-              </Link>
+              <Link href={`/dashboard/events/${entry.id}`}>
+  <h2 className="text-xl font-semibold text-[#0d47a1] hover:underline cursor-pointer">
+    {entry.title}
+  </h2>
+</Link>
 
-              <Link href={`/events/${entry.id}`}>
-              <Button
-                variant="outline"
-                className="text-sm text-[#0d47a1] hover:bg-blue-500 hover:text-white border-[#0d47a1] rounded-full"
-              >
-                View Now
-              </Button>
-              </Link>
+<Link href={`/dashboard/events/${entry.id}`}>
+  <Button
+    variant="outline"
+    className="text-sm text-[#0d47a1] hover:bg-blue-500 hover:text-white border-[#0d47a1] rounded-full"
+  >
+    View Now
+  </Button>
+</Link>
+
             </div>
 
             <div className="flex items-center text-sm text-gray-700">
