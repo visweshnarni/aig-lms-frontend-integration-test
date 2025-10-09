@@ -1,14 +1,13 @@
 // app/data/events.ts
 
 export interface Event {
-  id: string;  
+  id: string;  // Must be string for clean routing
   title: string;
   dateRange: string;
   location: string;
   imageUrl: string;
   popularity?: number;
   price?: number;
-
 }
 
 export const events: Event[] = [
@@ -18,9 +17,8 @@ export const events: Event[] = [
     dateRange: "17 Apr 2026 - 18 Apr 2026",
     location: "The Lalit, IT Park, Chandigarh",
     imageUrl: "/event-logo.png",
-    popularity: 95,
+    popularity: 120,
     price: 0,
-
   },
   {
     id: "pusicon-2026",
@@ -28,9 +26,8 @@ export const events: Event[] = [
     dateRange: "23 Apr 2026 - 25 Apr 2026",
     location: "The Lalit, IT Park, Chandigarh",
     imageUrl: "/event-logo.png",
-    popularity: 95,
+    popularity: 110,
     price: 0,
-
   },
   {
     id: "androcon-2026",
@@ -38,8 +35,7 @@ export const events: Event[] = [
     dateRange: "2 May 2026 - 3 May 2026",
     location: "The Lalit, IT Park, Chandigarh",
     imageUrl: "/event-logo.png",
-    popularity: 95,
+    popularity: 85,
     price: 0,
-
   },
 ];
