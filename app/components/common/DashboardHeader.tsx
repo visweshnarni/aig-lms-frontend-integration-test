@@ -8,8 +8,8 @@ export default function DashboardHeader() {
 
   return (
     <header className="fixed top-0 left-0 right-0 h-20 bg-gradient-to-r from-[#B5D9FF] to-[#D6E7FF] shadow-md flex items-center justify-between px-8 z-50">
-      {/* Left Section: Logo + Text */}
-      <div className="flex items-center gap-3">
+      {/* Left Section: Logo */}
+      <div className="flex items-center gap-3 cursor-pointer" onClick={() => router.push("/dashboard/events")}>
         <Image
           src="/urological.png"
           alt="Urological Society of India"
@@ -17,18 +17,25 @@ export default function DashboardHeader() {
           height={190}
           className="object-contain"
         />
-
       </div>
 
       {/* Right Section: Profile + Logout */}
       <div className="flex items-center gap-6">
-        <Image
-          src="/profile.jpeg"
-          alt="Profile"
-          width={45}
-          height={45}
-          className="rounded-full object-cover border-2  shadow-sm"
-        />
+        {/* Profile Icon → My Profile Page */}
+        <button
+          onClick={() => router.push("/dashboard/myprofile")}
+          className="focus:outline-none"
+        >
+          <Image
+            src="/profile.jpeg"
+            alt="Profile"
+            width={45}
+            height={45}
+            className="rounded-full object-cover border-2 border-white shadow-sm hover:opacity-90 transition"
+          />
+        </button>
+
+        {/* Logout Button */}
         <button
           onClick={() => router.push("/logout")}
           className="bg-orange-500 text-white font-semibold px-6 py-2 rounded-full hover:bg-orange-600 transition"
