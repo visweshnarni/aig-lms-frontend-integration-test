@@ -2,7 +2,14 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { CalendarDays, MapPin, Video, SlidersHorizontal, Search } from "lucide-react";
+import Link from "next/link";
+import {
+  CalendarDays,
+  MapPin,
+  Video,
+  SlidersHorizontal,
+  Search,
+} from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -32,10 +39,8 @@ export default function RegEvents() {
 
   const sortedEvents = [...registeredEvents].sort((a, b) => {
     if (sortBy === "newest") {
-      // Sorting by end date
-      return (
-        new Date(b.endDate).getTime() - new Date(a.endDate).getTime()
-      );
+      // Sort by end date
+      return new Date(b.endDate).getTime() - new Date(a.endDate).getTime();
     }
     if (sortBy === "name") {
       return a.name.localeCompare(b.name);
@@ -53,7 +58,6 @@ export default function RegEvents() {
 
   return (
     <div className="space-y-6 p-1">
-
       {/* Sort & Search */}
       <div className="flex flex-col sm:flex-row justify-between gap-4 items-start sm:items-center">
         {/* Search */}
@@ -104,7 +108,7 @@ export default function RegEvents() {
         >
           {/* Left */}
           <div className="flex gap-4">
-            <div className="w-24 h-24 flex-shrink-0 bg-red-500 rounded-md flex items-center justify-center overflow-hidden">
+            <div className="w-24 h-24 flex-shrink-0 bg-gray-200 rounded-md flex items-center justify-center overflow-hidden">
               <Image
                 src={event.image}
                 alt={event.name}
@@ -123,18 +127,18 @@ export default function RegEvents() {
                   {event.startDate} - {event.endDate}
                 </span>
               </div>
-              <div className="flex items-center gap-2  mt-1 text-black">
+              <div className="flex items-center gap-2 mt-1 text-black">
                 <MapPin className="h-4 w-4" />
                 <span>{event.location}</span>
               </div>
               {event.videos && (
-                <div className="flex items-center gap-2  mt-1 text-black">
+                <div className="flex items-center gap-2 mt-1 text-black">
                   <Video className="h-4 w-4" />
                   <span>{event.videos}</span>
                 </div>
               )}
               {event.sessions && (
-                <div className="flex flex-wrap gap-3  mt-1 text-black">
+                <div className="flex flex-wrap gap-3 mt-1 text-black">
                   <span>{event.sessions}</span>
                   <span>• {event.videos}</span>
                   <span>• {event.duration}</span>
@@ -146,9 +150,13 @@ export default function RegEvents() {
           {/* Right */}
           <div className="flex flex-col items-end text-sm text-gray-500">
             <span>Registered on {event.registeredOn}</span>
-            <Button className="mt-2 bg-blue-600 hover:bg-blue-700 text-white">
-              View Now
-            </Button>
+
+            {/* ✅ View Now Button navigates to /dashboard/events/[id] */}
+            <Link href={`/dashboard/events/${event.id}`}>
+              <Button className="mt-2 bg-blue-600 hover:bg-blue-700 text-white">
+                View Now
+              </Button>
+            </Link>
           </div>
         </div>
       ))}

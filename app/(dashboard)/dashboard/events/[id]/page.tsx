@@ -1,6 +1,7 @@
 "use client";
 import { useParams } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import { CalendarDays, MapPin, Search, ChevronDown, ChevronUp } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,12 +9,30 @@ import { events } from "@/app/data/events";
 import { videos as videoData } from "@/app/data/videos";
 import RegisterModal from "@/app/components/dashboard/Events/RegisterModal";
 
-// Mock hook (replace with real one if needed)
+// Mock registration hook
 function useRegisteredEvents() {
   const [registered, setRegistered] = useState<string[]>([]);
-  const register = (id: string) => setRegistered(rs => [...rs, id]);
+  const register = (id: string) => setRegistered((rs) => [...rs, id]);
   const isRegistered = (id: string) => registered.includes(id);
   return { isRegistered, register };
+}
+
+// Convert raw YouTube/Vimeo URLs to embed
+function getEmbedUrl(url: string | undefined) {
+  if (!url) return "";
+  if (url.includes("youtube.com/watch?v=")) {
+    const videoId = url.split("v=")[1]?.split("&")[0];
+    return `https://www.youtube.com/embed/${videoId}`;
+  }
+  if (url.includes("youtu.be/")) {
+    const videoId = url.split("youtu.be/")[1]?.split("?")[0];
+    return `https://www.youtube.com/embed/${videoId}`;
+  }
+  if (url.includes("vimeo.com/")) {
+    const videoId = url.split("vimeo.com/")[1];
+    return `https://player.vimeo.com/video/${videoId}`;
+  }
+  return url;
 }
 
 export default function EventDetailsPage() {
@@ -26,10 +45,9 @@ export default function EventDetailsPage() {
 
   if (!event) return <div className="p-8 text-center">Event not found</div>;
 
-  // Filter and group videos by session
+  // Filter & group videos by session
   const filteredVideos = videoData.filter(
-    (v) =>
-      v.eventId === id && v.title.toLowerCase().includes(search.toLowerCase())
+    (v) => v.eventId === id && v.title.toLowerCase().includes(search.toLowerCase())
   );
   const sessions: Record<string, typeof filteredVideos> = {};
   filteredVideos.forEach((v) => {
@@ -38,16 +56,16 @@ export default function EventDetailsPage() {
     sessions[session].push(v);
   });
 
-  function handleRegister() {
-    register(id);
-    setIsModalOpen(false);
-  }
-
   const toggleSession = (session: string) => {
     setOpenSessions((prev) => ({
       ...prev,
       [session]: !prev[session],
     }));
+  };
+
+  const handleRegister = () => {
+    register(id);
+    setIsModalOpen(false);
   };
 
   return (
@@ -64,9 +82,7 @@ export default function EventDetailsPage() {
             />
           </div>
           <div className="flex-1">
-            <h1 className="text-3xl font-bold text-[#0d47a1] mb-2">
-              {event.title}
-            </h1>
+            <h1 className="text-3xl font-bold text-[#0d47a1] mb-2">{event.title}</h1>
             <div className="flex items-center text-black mb-2">
               <CalendarDays className="w-4 h-4 mr-2 text-black" />
               <span>{event.dateRange}</span>
@@ -86,45 +102,30 @@ export default function EventDetailsPage() {
           </Button>
         )}
       </div>
+
       <hr className="my-8 border-gray-300" />
 
-      {/* Contents */}
-      <div>
-        <h2 className="text-xl mb-3 text-[#0d47a1]">Contents</h2>
-        <p className="text-black sm:text-base">
-          {Object.keys(sessions).length} Sessions • {filteredVideos.length} Videos •{" "}
-          {filteredVideos.reduce(
-            (sum, v) =>
-              sum +
-              parseInt(v.duration.split(":")[0]) * 60 +
-              parseInt(v.duration.split(":")[1]),
-            0
-          )}{" "}
-          mins total length
-        </p>
+      {/* Search */}
+      <div className="relative w-full sm:w-1/2">
+        <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
+        <input
+          type="text"
+          placeholder="Search videos"
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+          className="border border-gray-300 rounded-md px-8 py-2 w-full focus:ring-2 focus:ring-[#FF6600] focus:outline-none"
+        />
       </div>
 
-      {/* Search & Session List */}
+      {/* Sessions */}
       <div className="space-y-8">
-        <div className="relative w-full sm:w-1/2">
-          <Search className="absolute left-3 top-2.5 h-4 w-4 text-gray-400" />
-          <input
-            type="text"
-            placeholder="Search videos"
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="border border-gray-300 rounded-md px-8 py-2 w-full focus:ring-2 focus:ring-[#FF6600] focus:outline-none"
-          />
-        </div>
-
         {Object.keys(sessions).map((session) => (
           <div key={session} className="space-y-4 border-b pb-4">
-            {/* Session Header with Chevron beside name */}
             <div className="flex items-center gap-2">
               <h3 className="text-lg font-semibold text-[#0d47a1]">{session}</h3>
               <button
                 onClick={() => toggleSession(session)}
-                className="p-1 text-[#FF6600] hover:text-[#cc5200] focus:outline-none"
+                className="p-1 text-[#FF6600] hover:text-[#cc5200]"
               >
                 {openSessions[session] ? (
                   <ChevronUp className="w-5 h-5" />
@@ -134,58 +135,51 @@ export default function EventDetailsPage() {
               </button>
             </div>
 
-            {/* Collapsible Video Section */}
             {openSessions[session] && (
               <div className="space-y-4 mt-3">
                 {sessions[session].map((video) =>
                   isRegistered(id) ? (
-                    <div
+                    <Link
                       key={video.id}
-                      className="flex flex-col gap-3 border-b pb-4 hover:bg-gray-50 rounded-md transition p-3"
+                      href={`/dashboard/events/${id}/video/${video.id}`}
+                      className="flex items-center gap-4 border-b pb-4 hover:bg-gray-50 rounded-md transition p-3"
                     >
-                      <div className="flex items-center gap-3">
-                        <div className="text-black w-6">{video.id}</div>
-                        <div className="flex-1">
-                          <p className="text-sm text-black mb-1">
-                            {video.title}
-                          </p>
-                          <p className="text-sm text-black">
-                            Speaker –{" "}
-                            <span className="text-[#FF6600] font-bold">
-                              {video.speaker}
-                            </span>
-                          </p>
-                        </div>
-                        <div className="text-black whitespace-nowrap">
-                          {video.duration}
-                        </div>
-                      </div>
-
-                      {/* Inline Video Player */}
-                      <div className="w-full h-64 sm:h-80 rounded-md overflow-hidden">
+                      {/* Left: Video Thumbnail */}
+                      <div className="w-40 h-24 rounded-md overflow-hidden flex-shrink-0">
                         <iframe
-                          src={video.videoUrl}
+                          src={getEmbedUrl(video.videoUrl)}
                           title={video.title}
                           className="w-full h-full rounded-md"
                           allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                           allowFullScreen
                         ></iframe>
                       </div>
-                    </div>
+
+                      {/* Center: Video Info */}
+                      <div className="flex-1">
+                        <p className="text-sm text-black font-semibold mb-1">{video.title}</p>
+                        <p className="text-sm text-gray-700">
+                          Speaker –{" "}
+                          <span className="text-[#FF6600] font-bold">
+                            {video.speaker}
+                          </span>
+                        </p>
+                      </div>
+
+                      {/* Right: Duration */}
+                      <div className="text-sm text-gray-700 font-medium whitespace-nowrap">
+                        {video.duration}
+                      </div>
+                    </Link>
                   ) : (
                     <div
                       key={video.id}
                       onClick={() => setIsModalOpen(true)}
-                      className="flex items-start gap-4 border-b pb-4 rounded-md transition cursor-pointer opacity-60"
+                      className="flex items-center gap-4 border-b pb-4 rounded-md transition cursor-pointer opacity-60"
                     >
-                      <div className="text-gray-600 font-semibold w-6">
-                        {video.id}
-                      </div>
-                      <div className="w-32 h-20 relative rounded-md overflow-hidden shrink-0 bg-gray-200"></div>
+                      <div className="w-40 h-24 bg-gray-200 rounded-md flex-shrink-0" />
                       <div className="flex-1">
-                        <p className="text-sm text-gray-800 font-medium mb-1">
-                          {video.title}
-                        </p>
+                        <p className="text-sm text-gray-800 font-medium mb-1">{video.title}</p>
                         <p className="text-sm text-gray-600">
                           Speaker –{" "}
                           <span className="text-[#FF6600] font-semibold">
