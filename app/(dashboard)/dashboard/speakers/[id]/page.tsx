@@ -38,13 +38,15 @@ export default function SpeakerDetailsPage() {
         </div>
         <div>
           <h1 className="text-2xl font-semibold text-[#FF6600]">{speaker.name}</h1>
-          <p className="text-black flex items-center gap-2 mt-1">
+          <p className="text-black flex items-center font-semibold gap-2 mt-1">
             <CalendarDays className="w-4 h-4" />
             <span>{speaker.institute}</span>
           </p>
-          <p className="text-black flex items-center gap-2 mt-1">
-            <MapPin className="w-4 h-4 text-balck" /><span>{speaker.location}</span></p>
-          <div className="flex items-center gap-2 mt-1 text-sm text-black">
+          <p className="text-black font-semibold flex items-center gap-2 mt-1">
+            <MapPin className="w-4 h-4 text-black" />
+            <span>{speaker.location}</span>
+          </p>
+          <div className="flex items-center gap-2 mt-1 font-semibold text-sm text-black">
             <Video className="w-4 h-4" /> {speaker.videos} videos
           </div>
         </div>
@@ -52,8 +54,8 @@ export default function SpeakerDetailsPage() {
 
       {/* Videos Section */}
       <div>
-        <h2 className="text-lg font-semibold text-[#1A1A1A] mb-2">Videos</h2>
-        <p className="text-sm text-gray-500 mb-4">
+        <h2 className="text-lg font-semibold text-blue-500 mb-2">Videos</h2>
+        <p className="text-black mb-4">
           {speaker.videos} Videos • 50 mins total length
         </p>
 
@@ -61,30 +63,27 @@ export default function SpeakerDetailsPage() {
           {speaker.videoList.map((video, index) => (
             <div
               key={video.id}
-              className="flex flex-col sm:flex-row justify-between items-start sm:items-center border border-gray-200 rounded-lg p-4 bg-white shadow-sm"
+              className="flex flex-col sm:flex-row items-start sm:items-center border border-gray-200 rounded-lg p-4 bg-white shadow-sm"
             >
-              <div className="flex items-start gap-4">
-                {/* Video thumbnail placeholder */}
-                <div className="w-32 h-20 bg-black text-white flex items-center justify-center rounded-md">
-                  <Video className="w-6 h-6" />
-                </div>
-
-                <div>
-                  <div className="text-sm text-gray-500 mb-1">{index + 1}</div>
-                  <p className="font-medium text-gray-800 leading-snug max-w-lg">
-                    {video.title}
-                  </p>
-                  <p className="text-sm text-gray-500 mt-1">
-                    Event –{" "}
-                    <span className="text-[#FF6600] font-medium">
-                      {video.event}
-                    </span>
-                  </p>
-                </div>
+              {/* Index */}
+              <div className="text-l  text-black mr-4 w-8 flex-shrink-0">
+                {index + 1}
               </div>
 
+              {/* Video Thumbnail */}
+              <div className="w-32 h-20 bg-black text-white flex items-center justify-center rounded-md mr-4 flex-shrink-0">
+                <Video className="w-6 h-6" />
+              </div>
+
+              {/* Title and Event */}
+              <div className="flex-1">
+                <p className="text-black">{video.title}</p>
+                <p className="text-[#FF6600] mt-1 text-sm">{video.event}</p>
+              </div>
+
+              {/* Duration & Button */}
               <div className="flex items-center justify-between sm:justify-end w-full sm:w-auto mt-3 sm:mt-0 gap-4">
-                <span className="text-sm text-gray-600">Video – {video.duration}</span>
+                <span className="text-black text-sm">Video – {video.duration}</span>
                 <Button className="bg-[#FF6600] hover:bg-[#e65c00] text-white px-5 py-2 rounded-md">
                   Buy Now
                 </Button>
