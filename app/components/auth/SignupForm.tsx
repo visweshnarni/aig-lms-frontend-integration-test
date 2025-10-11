@@ -17,6 +17,8 @@ type FormData = {
 };
 
 type FormErrors = Partial<Record<keyof FormData, string>>;
+const BACKEND_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_BASE_URL || 'http://localhost:5000';
+
 
 export function SignupForm() {
   const router = useRouter();
@@ -75,23 +77,56 @@ export function SignupForm() {
     return newErrors;
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const validationErrors = validate();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  e.preventDefault();
+  const validationErrors = validate();
+  if (Object.keys(validationErrors).length > 0) {
+    setErrors(validationErrors);
+    return;
+  }
 
-    if (!agree) {
-      alert("Please accept Terms & Conditions before signing up.");
-      return;
-    }
+  if (!agree) {
+    alert("Please accept Terms & Conditions before signing up.");
+    return;
+  }
 
-    setErrors({});
-    alert("Signup successful!");
-    router.push("/login");
-  };
+  setErrors({});
+  
+  try {
+    const response = await fetch(`${BACKEND_BASE_URL}/auth/signup`, {
+  method: 'POST',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+  body: JSON.stringify(form),
+});
+
+
+    const data = await response.json();
+
+    if (response.ok) {
+      // Store token and user data in localStorage or context
+      localStorage.setItem('token', data.token);
+      localStorage.setItem('user', JSON.stringify(data.user));
+      
+      alert("Signup successful!");
+      router.push("/login");
+    } else {
+      // Handle error responses
+      if (response.status === 400) {
+        alert(`Validation error: ${data.error}`);
+      } else if (response.status === 409) {
+        alert(`Signup failed: ${data.error}`);
+      } else {
+        alert("Signup failed. Please try again.");
+      }
+    }
+  } catch (error) {
+    console.error('Signup error:', error);
+    alert("Network error. Please check your connection and try again.");
+  }
+};
+
 
   return (
     <div className="flex flex-col md:flex-row w-full max-w-3xl mx-auto bg-white rounded-2xl shadow-lg">

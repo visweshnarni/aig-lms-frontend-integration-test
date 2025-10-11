@@ -11,6 +11,8 @@ type LoginData = {
   email: string;
   password: string;
 };
+const BACKEND_BASE_URL = process.env.NEXT_PUBLIC_BACKEND_BASE_URL || 'http://localhost:5000/api';
+console.log("Backend Base URL:", BACKEND_BASE_URL);
 
 export function LoginForm() {
   const router = useRouter();
@@ -21,15 +23,44 @@ export function LoginForm() {
 
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!form.email || !form.password) {
-      setError("Email and password are required.");
-    } else {
-      setError(null);
-      alert("Login successful!");
+  const handleSubmit = async (e: React.FormEvent) => {
+  e.preventDefault();
+
+  if (!form.email || !form.password) {
+    setError("Email and password are required.");
+    return;
+  }
+
+  setError(null);
+
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/auth/login`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(form),
+    });
+
+    const data = await response.json();
+
+    if (!response.ok) {
+      setError(data.error || "Login failed");
+      return;
     }
-  };
+
+    // Log the token to console to verify it
+    // console.log("JWT Token:", data.token);
+
+    // Save token to localStorage (or cookies if preferred)
+    localStorage.setItem("token", data.token);
+
+    alert("Login successful!");
+    router.push("/dashboard"); // redirect to homepage or dashboard as needed
+  } catch (error) {
+    setError("Something went wrong. Please try again.");
+    console.error("Login error:", error);
+  }
+};
+
 
   return (
     <div className="flex flex-col md:flex-row w-full max-w-3xl mx-auto bg-white rounded-2xl shadow-lg overflow-hidden">
