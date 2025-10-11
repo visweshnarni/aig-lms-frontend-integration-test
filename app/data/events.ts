@@ -1,13 +1,11 @@
-// app/data/events.ts
-
 export interface Event {
-  id: string;  // Must be string for clean routing
+  id: string;
   title: string;
   dateRange: string;
   location: string;
   imageUrl: string;
   popularity?: number;
-  price?: number;
+  price?: number; // Price added to demonstrate 'Buy Now'
 }
 
 export const events: Event[] = [
@@ -18,7 +16,7 @@ export const events: Event[] = [
     location: "The Lalit, IT Park, Chandigarh",
     imageUrl: "/event-logo.png",
     popularity: 120,
-    price: 0,
+    price: 0, // Free event
   },
   {
     id: "pusicon-2026",
@@ -27,7 +25,7 @@ export const events: Event[] = [
     location: "The Lalit, IT Park, Chandigarh",
     imageUrl: "/event-logo.png",
     popularity: 110,
-    price: 0,
+    price: 2500, // Paid event
   },
   {
     id: "androcon-2026",
@@ -36,6 +34,24 @@ export const events: Event[] = [
     location: "The Lalit, IT Park, Chandigarh",
     imageUrl: "/event-logo.png",
     popularity: 85,
-    price: 0,
+    price: 5000, // Paid event
+  },
+  {
+    id: "uro-complicon-2025",
+    title: "URO-Complicon 2025", // Added for speaker details
+    dateRange: "10 Oct 2025 - 11 Oct 2025",
+    location: "Virtual Event",
+    imageUrl: "/event-logo.png",
+    popularity: 150,
+    price: 0, // Free event
+  },
+  {
+    id: "urolithicon-2025",
+    title: "Urolithicon 2025", // Added for speaker details
+    dateRange: "1 Dec 2025 - 2 Dec 2025",
+    location: "Mumbai",
+    imageUrl: "/event-logo.png",
+    popularity: 90,
+    price: 1500, // Paid event
   },
 ];

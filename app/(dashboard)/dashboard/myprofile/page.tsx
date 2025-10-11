@@ -1,10 +1,11 @@
-import ProfileComponent from "@/app/components/dashboard/myprofile/profile";
+import ProfileComponent from "@/app/components/dashboard/myprofile/ProfileComponent";
+import { profileData } from "@/app/data/profile";
 
 export default function MyProfilePage() {
   return (
-    <div className="min-h-screen bg-[#f8f9fc] p-4">
-      <h2 className="text-xl font-semibold mb-4">My Profile</h2>
-      <ProfileComponent />
+    <div >
+      <h1 className="text-2xl font-semibold text-gray-800 mb-6">My Profile</h1>
+      <ProfileComponent initialData={profileData} />
     </div>
   );
 }
