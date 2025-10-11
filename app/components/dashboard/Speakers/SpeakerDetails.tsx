@@ -49,15 +49,15 @@ export default function SpeakerDetails({ speaker, videos }: Props) {
         </div>
         <div>
           <h1 className="text-3xl font-bold text-orange-600">{speaker.name}</h1>
-          <p className="text-gray-700 flex items-center gap-2 mt-2">
-            <Building className="w-4 h-4 text-gray-400" />
-            <span className="font-semibold">{speaker.institute}</span>
+          <p className="text-black-700 flex items-center gap-2 mt-2">
+            <Building className="w-4 h-4 text-black-400" />
+            <span className="">{speaker.institute}</span>
           </p>
-          <p className="text-gray-700 flex items-center gap-2 mt-1">
-            <MapPin className="w-4 h-4 text-gray-400" />
-            <span className="font-semibold">{speaker.location}</span>
+          <p className="text-black-700 flex items-center gap-2 mt-1">
+            <MapPin className="w-4 h-4 text-balck-400" />
+            <span className="">{speaker.location}</span>
           </p>
-          <div className="flex items-center gap-2 mt-1 font-semibold text-sm text-gray-600">
+          <div className="flex items-center gap-2 mt-1  text-sm text-black-600">
             <Video className="w-4 h-4" /> {videos.length} videos
           </div>
         </div>
@@ -66,7 +66,7 @@ export default function SpeakerDetails({ speaker, videos }: Props) {
       {/* Videos Section */}
       <div>
         <h2 className="text-xl font-semibold text-blue-900 mb-1">Videos</h2>
-        <p className="text-gray-600 mb-6">
+        <p className="text-black-600 mb-6">
           {videos.length} Videos • {Math.floor(totalDurationMinutes / 60)} mins total length
         </p>
         <div className="space-y-4">
@@ -75,20 +75,20 @@ export default function SpeakerDetails({ speaker, videos }: Props) {
             return (
               <div
                 key={video.id}
-                className="flex flex-col sm:flex-row items-start gap-4 border-b border-gray-200 pb-4 last:border-b-0"
+                className="flex flex-col sm:flex-row items-start gap-4 border-b border-black-200 pb-4 last:border-b-0"
               >
-                <span className="text-gray-500 font-medium w-8 text-center pt-2">{index + 1}</span>
+                <span className="text-black-500  w-8 text-center pt-2">{index + 1}</span>
                 <div className="w-40 h-24 relative rounded-md overflow-hidden shrink-0 bg-black">
                   <VideoThumbnail videoUrl={video.videoUrl} />
                 </div>
                 <div className="flex-1">
-                  <p className="font-semibold text-gray-800 leading-snug">{video.title}</p>
-                  <p className="text-sm text-gray-500 mt-1">
+                  <p className=" text-black-800 leading-snug">{video.title}</p>
+                  <p className=" text-black-500 mt-1">
                     Event - <Link href={`/dashboard/events/${video.eventId}`} className="font-semibold text-orange-600 hover:underline">{video.eventTitle}</Link>
                   </p>
                 </div>
                 <div className="flex items-center gap-4 pt-2">
-                  <span className="text-sm text-gray-500 font-mono whitespace-nowrap">Video - {video.duration}</span>
+                  <span className="text-black-500 font-mono whitespace-nowrap">Video - {video.duration}</span>
                   {isEventRegistered ? (
                     <Link href={`/dashboard/registeredevents/${video.eventId}/video/${video.id}`}>
                       <Button className="bg-green-600 hover:bg-green-700 text-white rounded-full px-5">Watch Now</Button>

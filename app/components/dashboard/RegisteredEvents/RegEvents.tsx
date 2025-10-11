@@ -47,7 +47,7 @@ export default function RegEvents({ entries }: Props) {
 
       {/* Controls: Sort and Search */}
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-        <div className="relative w-full sm:max-w-xs">
+        <div className="relative w-full sm:max-w-1/2">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-gray-400" />
           <input
             type="text"
@@ -105,7 +105,7 @@ export default function RegEvents({ entries }: Props) {
                   </h2>
                 </Link>
                 <div className="flex flex-col items-end gap-2 text-right flex-shrink-0 ml-4">
-                  <p className="text-xs text-gray-500 whitespace-nowrap">Registered on {event.registeredOn}</p>
+                  <p className="text-xs text-black-500 whitespace-nowrap">Registered on {event.registeredOn}</p>
                    <Link href={`/dashboard/registeredevents/${event.id}`}>
                     <Button
                       variant="outline"
@@ -117,17 +117,17 @@ export default function RegEvents({ entries }: Props) {
                 </div>
               </div>
 
-              <div className="flex items-center text-gray-700">
-                <CalendarDays className="w-4 h-4 mr-2 text-gray-500" />
+              <div className="flex items-center text-black-700">
+                <CalendarDays className="w-4 h-4 mr-2 text-black-500" />
                 <span>{event.startDate} - {event.endDate}</span>
               </div>
 
-              <div className="flex items-center text-gray-700">
-                <MapPin className="w-4 h-4 mr-2 text-gray-500" />
+              <div className="flex items-center text-black-700">
+                <MapPin className="w-4 h-4 mr-2 text-black-500" />
                 <span>{event.location}</span>
               </div>
               
-              <div className="text-sm text-gray-600">
+              <div className="text-sm text-black-600">
                 <span>{event.sessions}</span>
                 <span className="mx-1.5">•</span>
                 <span>{event.videos}</span>
