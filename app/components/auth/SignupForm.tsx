@@ -183,9 +183,9 @@ export function SignupForm() {
               onChange={(e) =>
                 setForm((prev) => ({ ...prev, country: e.target.value }))
               }
-              className="w-full px-4 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none bg-white text-gray-700"
+              className="w-72 px-3 py-2 border rounded-lg focus:ring-2 focus:ring-blue-400 outline-none bg-white text-gray-600"
             >
-              <option value="">Select your country</option>
+              <option value="">-select-</option>
               <option value="India">India</option>
               <option value="United States">United States</option>
               <option value="United Kingdom">United Kingdom</option>
