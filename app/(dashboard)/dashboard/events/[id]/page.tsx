@@ -154,24 +154,28 @@ export default function EventDetailsPage() {
         
         {/* === UPDATED BUTTON LOGIC === */}
         {/* This block now renders the correct button based on enrollment and event type, or nothing if enrolled. */}
-        {!eventDetails.isEnrolled && (
-          eventDetails.regType === 'FREE' ? (
+         {/* === UPDATED BUTTON LOGIC === */}
+      {!eventDetails.isEnrolled && (
+        eventDetails.regType === 'FREE' ? (
+          <Button
+            onClick={() => setIsModalOpen(true)}
+            className="bg-[#00A651] hover:bg-green-700 text-white font-semibold px-8 py-3 rounded-lg shadow-lg w-full md:w-auto"
+          >
+            Register Free
+          </Button>
+        ) : (
+          // 👇 CHANGED: This button now links to the checkout page
+          <a href={`/dashboard/events/${id}/checkout`}>
             <Button
-              onClick={() => setIsModalOpen(true)}
-              className="bg-[#00A651] hover:bg-green-700 text-white font-semibold px-8 py-3 rounded-lg shadow-lg w-full md:w-auto"
-            >
-              Register Free
-            </Button>
-          ) : (
-            <Button
-              onClick={() => setIsModalOpen(true)}
               className="bg-orange-500 hover:bg-orange-600 text-white font-semibold px-6 py-3 rounded-lg shadow-lg w-full md:w-auto flex items-center justify-center"
             >
               <span className="border-r border-orange-300 pr-3 mr-3 text-base">₹ {eventDetails.amount}</span>
               <span className="text-base">Buy Now</span>
             </Button>
-          )
-        )}
+          </a>
+        )
+      )}
+
       </div>
 
       {/* Contents & Search Section */}
