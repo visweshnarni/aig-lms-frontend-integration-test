@@ -43,3 +43,9 @@ export interface VideoPlayerData {
     sessionPlaylist: Topic[];
 }
 
+export interface VideoPlayerPageData {
+  eventName: string;
+  sessionName: string;
+  currentTopic: Topic;
+  sessionPlaylist: Topic[];
+}
