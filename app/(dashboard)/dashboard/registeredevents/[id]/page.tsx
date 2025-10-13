@@ -161,12 +161,12 @@ export default function RegisteredEventDetailsPage() {
             <h1 className="text-3xl font-bold text-blue-900 mt-2 mb-3 font-francois-one">
               {event.fullName}
             </h1>
-            <div className="flex items-center text-gray-700 mb-2 font-francois-one">
-              <CalendarDays className="w-4 h-4 mr-2 text-gray-400" />
+            <div className="flex items-center text-black-700 mb-2 font-francois-one">
+              <CalendarDays className="w-4 h-4 mr-2 text-black-400" />
               <span>{formatDateRange(event.start_date, event.end_date)}</span>
             </div>
-            <div className="flex items-center text-gray-700 font-francois-one">
-              <MapPin className="w-4 h-4 mr-2 text-gray-400" />
+            <div className="flex items-center text-black-700 font-francois-one">
+              <MapPin className="w-4 h-4 mr-2 text-black-400" />
               <span>{event.venue}, {event.city}</span>
             </div>
           </div>
@@ -227,7 +227,7 @@ export default function RegisteredEventDetailsPage() {
                           Speaker - <span className="font-semibold text-orange-600">{video.speakerName || 'N/A'}</span>
                         </p>
                       </div>
-                      <span className="text-gray-500 text-sm font-mono whitespace-nowrap font-francois-one">Video - {video.video_duration}</span>
+                      <span className="text-black-500 text-sm font-mono whitespace-nowrap font-francois-one">Video - {video.video_duration}</span>
                     </a>
                   ))}
                 </div>

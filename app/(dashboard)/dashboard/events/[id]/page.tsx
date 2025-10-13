@@ -128,7 +128,7 @@ export default function EventDetailsPage() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 space-y-8 bg-white">
       {/* Breadcrumb Section */}
       <div className="flex items-center text-sm">
-        <a href="/dashboard/events" className="text-gray-600 hover:underline">Events</a>
+        <a href="/dashboard/events" className="text-orange-600 hover:underline">Events</a>
         <span className="mx-2 text-gray-400">{'>'}</span>
         <span className="font-medium text-orange-600">{eventDetails.fullName}</span>
       </div>
@@ -141,12 +141,12 @@ export default function EventDetailsPage() {
           </div>
           <div className="flex-1">
             <h1 className="text-3xl font-bold text-blue-900 mb-3">{eventDetails.fullName}</h1>
-            <div className="flex items-center text-gray-700 mb-2">
-              <CalendarDays className="w-4 h-4 mr-2 text-gray-400" />
+            <div className="flex items-center text-black-700 mb-2">
+              <CalendarDays className="w-4 h-4 mr-2 text-black-400" />
               <span>{formatDateRange(eventDetails.start_date, eventDetails.end_date)}</span>
             </div>
-            <div className="flex items-center text-gray-700">
-              <MapPin className="w-4 h-4 mr-2 text-gray-400" />
+            <div className="flex items-center text-black-700">
+              <MapPin className="w-4 h-4 mr-2 text-black-400" />
               <span>{eventDetails.venue}</span>
             </div>
           </div>
@@ -232,7 +232,7 @@ export default function EventDetailsPage() {
                     <p className="font-medium text-gray-800 leading-snug">{topic.topic}</p>
                     <p className="text-sm text-gray-500 mt-1">Speaker - <span className="font-semibold text-orange-600">{topic.speakerName}</span></p>
                   </div>
-                  <span className="text-gray-500 text-sm font-mono whitespace-nowrap">Video - {topic.video_duration}</span>
+                  <span className="text-black-500 text-sm font-mono whitespace-nowrap">Video - {topic.video_duration}</span>
                 </div>
               ))}
             </div>
