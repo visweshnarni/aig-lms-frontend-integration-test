@@ -1,63 +1,83 @@
-"use client"; // <-- Make it a Client Component
+"use client";
 
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
+import { Loader2 } from "lucide-react";
 import SpeakerDetails from "@/app/components/dashboard/Speakers/SpeakerDetails";
-import { speakers, Speaker } from "@/app/data/speakers";
-import { videos, Video } from "@/app/data/videos";
-import { events } from "@/app/data/events";
-
-// Define the enriched video type again for client-side use
-interface EnrichedVideo extends Video {
-  eventTitle: string;
-  eventPrice: number;
-}
+import type { SpeakerPageData } from "@/app/types/speaker-details"; // Import the new type
 
 export default function SpeakerDetailsPage() {
-  const params = useParams(); // Use the hook to get params
-  const id = params.id as string;
+  const params = useParams();
+  const id = params.id as string; // Get speaker ID from the URL
 
-  // Use state to hold the data
-  const [speaker, setSpeaker] = useState<Speaker | null>(null);
-  const [speakerVideos, setSpeakerVideos] = useState<EnrichedVideo[]>([]);
+  const [data, setData] = useState<SpeakerPageData | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (id) {
-      const foundSpeaker = speakers.find(sp => sp.id.toString() === id);
-      
-      if (foundSpeaker) {
-        setSpeaker(foundSpeaker);
-        
-        const foundVideos = videos
-          .filter(video => video.speaker === foundSpeaker.name)
-          .map(video => {
-            const event = events.find(e => e.id === video.eventId);
-            return { 
-              ...video, 
-              eventTitle: event?.title || 'Unknown Event', 
-              eventPrice: event?.price ?? 0 
-            };
-          });
-        setSpeakerVideos(foundVideos);
+    if (!id) return;
+
+    const fetchSpeakerDetails = async () => {
+      setLoading(true);
+      setError(null);
+      try {
+        const backendUrl = process.env.NEXT_PUBLIC_BACKEND_BASE_URL;
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          throw new Error("You must be logged in to view speaker details.");
+        }
+
+        const response = await fetch(`${backendUrl}/speakers/details/${id}`, {
+          headers: {
+            "Authorization": `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          const errorData = await response.json();
+          throw new Error(errorData.error || "Failed to fetch speaker details.");
+        }
+
+        const result = await response.json();
+        if (result.success) {
+          setData(result.data);
+        } else {
+          throw new Error(result.error || "An unknown error occurred.");
+        }
+      } catch (err: any) {
+        setError(err.message);
+      } finally {
+        setLoading(false);
       }
-      setLoading(false);
-    }
-  }, [id]); // Re-run when the id changes
+    };
+
+    fetchSpeakerDetails();
+  }, [id]);
 
   if (loading) {
-    return <div className="p-8 text-center">Loading speaker details...</div>;
+    return (
+      <div className="flex justify-center items-center p-10">
+        <Loader2 className="h-8 w-8 animate-spin text-orange-500" />
+        <span className="ml-4 text-lg">Loading Speaker Details...</span>
+      </div>
+    );
   }
 
-  if (!speaker) {
+  if (error) {
+    return <div className="p-8 text-center text-red-600 bg-red-50 rounded-lg">Error: {error}</div>;
+  }
+
+  if (!data) {
     return <div className="p-8 text-center text-gray-600">Speaker not found.</div>;
   }
-  
+
   return (
-    <div >
-      <SpeakerDetails 
-        speaker={speaker} 
-        videos={speakerVideos}
+    <div>
+      {/* Pass the fetched data down to the display component */}
+      <SpeakerDetails
+        speaker={data.speakerDetails}
+        videos={data.videos}
       />
     </div>
   );
