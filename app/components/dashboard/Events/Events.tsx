@@ -199,8 +199,9 @@ export default function Events() {
               <MapPin className="w-4 h-4 mr-2 text-black" />
               <span>{entry.venue}</span>
             </div>
+            {/* --- CHANGE 2: USE DYNAMIC DATA HERE --- */}
             <div className="text-sm text-black ">
-              3 Sessions · 12 Videos · {entry.duration} mins total event
+                {entry.totalSessions || 0} Sessions · {entry.totalTopics || 0} Videos · {entry.duration || 0} mins total event
             </div>
           </div>
         </div>
@@ -220,4 +221,3 @@ export default function Events() {
     </div>
   );
 }
-
