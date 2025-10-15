@@ -5,6 +5,7 @@ import { CalendarDays, MapPin, Search, ChevronDown, Play, Loader2, Lock } from "
 import { Button } from "@/components/ui/button";
 import RegisterModal from "@/app/components/dashboard/Events/RegisterModal";
 import type { EventDetails, Session, Topic } from "@/app/types"; // Using centralized types
+import toast from "react-hot-toast";
 
 const formatDateRange = (startDateStr: string, endDateStr: string): string => {
   const options: Intl.DateTimeFormatOptions = { day: 'numeric', month: 'short', year: 'numeric' };
@@ -36,6 +37,7 @@ export default function EventDetailsPage() {
         setError("Could not find a valid Event ID in the URL.");
         return;
     }
+
 
     const fetchEventData = async () => {
       setLoading(true);
@@ -72,12 +74,56 @@ export default function EventDetailsPage() {
     fetchEventData();
   }, [id]);
   
-  function handleRegister() {
-    if (eventDetails) {
-       setEventDetails({ ...eventDetails, isEnrolled: true });
+   // --- NEW: API Handler for Registration ---
+  const handleRegisterSubmit = async (name: string, email: string) => {
+    if (!id) {
+      throw new Error("Event ID is missing. Cannot register.");
     }
-    setIsModalOpen(false);
-  }
+    
+    const token = localStorage.getItem("token");
+    if (!token) {
+      toast.error("You must be logged in to register.");
+      // Optionally redirect to login page here
+      throw new Error("User is not authenticated.");
+    }
+
+    const API_URL = `${process.env.NEXT_PUBLIC_BACKEND_BASE_URL}/enrollments/register/free`;
+
+    try {
+      const response = await fetch(API_URL, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify({
+          event_id: id,
+          fullName: name,
+          email: email
+        })
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        // This error message will be caught by the modal's catch block
+        throw new Error(data.error || 'Failed to register for the event.');
+      }
+
+      // --- Optimistic UI Update on Success ---
+      // If API call is successful, update the local state to reflect enrollment
+      setEventDetails(prevDetails => {
+        if (!prevDetails) return null;
+        return { ...prevDetails, isEnrolled: true };
+      });
+      setIsModalOpen(false); // Close the modal from the parent
+
+    } catch (err: any) {
+      // Re-throw the error so the modal can display it
+      throw err;
+    }
+  };
+
 
   if (loading) {
     return (
@@ -226,11 +272,12 @@ export default function EventDetailsPage() {
         ))}
       </div>
 
+       {/* --- UPDATED: Pass the new handler to the modal --- */}
       <RegisterModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
         eventTitle={eventDetails.fullName}
-        onRegister={handleRegister}
+        onRegister={handleRegisterSubmit}
       />
     </div>
   );
